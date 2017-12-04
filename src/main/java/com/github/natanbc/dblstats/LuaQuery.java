@@ -22,7 +22,7 @@ public class LuaQuery {
                 if(o instanceof Stream) o = ((Stream)o).collect(Collectors.toList());
                 if(o instanceof List) {
                     List l = (List)o;
-                    if(l.stream().noneMatch(e->e instanceof BotInfo)) {
+                    if(l.size() > 0 && !l.stream().allMatch(e->e instanceof BotInfo)) {
                         throw new InvalidReturnException("Non bot value returned");
                     }
                     return (List<BotInfo>)l;

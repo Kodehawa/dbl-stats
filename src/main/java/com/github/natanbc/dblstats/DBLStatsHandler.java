@@ -3,6 +3,7 @@ package com.github.natanbc.dblstats;
 import co.cask.http.AbstractHttpHandler;
 import co.cask.http.HttpResponder;
 import com.github.natanbc.discordbotsapi.BotInfo;
+import com.github.natanbc.luaeval.CycleLimitExceededException;
 import io.netty.handler.codec.http.CombinedHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpRequest;
@@ -10,6 +11,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.luaj.vm2.LuaError;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -70,9 +72,20 @@ public class DBLStatsHandler extends AbstractHttpHandler {
                             .put("updated", Main.getLastUpdated().toString())
                             .toString(4)
                     );
-                } catch(Exception e) {
+                } catch(CycleLimitExceededException e) {
+                    responder.sendJson(HttpResponseStatus.BAD_REQUEST, new JSONObject()
+                            .put("error", "cycle limit exceeded")
+                            .toString(4)
+                    );
+                } catch(LuaError|LuaQuery.InvalidReturnException e) {
                     responder.sendJson(HttpResponseStatus.BAD_REQUEST, new JSONObject()
                             .put("error", e.getMessage())
+                            .toString(4)
+                    );
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    responder.sendJson(HttpResponseStatus.INTERNAL_SERVER_ERROR, new JSONObject()
+                            .put("error", e.toString())
                             .toString(4)
                     );
                 }
@@ -110,6 +123,10 @@ public class DBLStatsHandler extends AbstractHttpHandler {
             );
         } catch(Throwable t) {
             t.printStackTrace();
+            responder.sendJson(HttpResponseStatus.INTERNAL_SERVER_ERROR, new JSONObject()
+                    .put("error", "internal server error")
+                    .toString(4)
+            );
         }
     }
 
