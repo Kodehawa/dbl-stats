@@ -1,0 +1,33 @@
+plugins {
+    id'java'
+    id'application'
+    id'com.github.johnrengelman.shadow' version '2.0.1'
+}
+
+group 'com.github.natanbc'
+version '1.0-SNAPSHOT'
+
+mainClassName = 'com.github.natanbc.dblstats.Main'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://dl.bintray.com/natanbc/maven' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compile 'com.github.natanbc:discordbots-api:1.4'
+    compile 'com.github.caskdata:netty-http:ef49be6'
+    compile 'com.github.natanbc:lua-eval:1.1.1'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+}
+
+shadowJar {
+    baseName = 'dbl-stats'
+    classifier = null
+    version = null
+    configurations = [project.configurations.compile]
+}

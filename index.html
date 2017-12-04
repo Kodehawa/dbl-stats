@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>API docs</title>
+    </head>
+    <body>
+        <h1>Caching</h1>
+        <h2>All data is cached from the DBL api, updated once per hour</h2>
+        <h1>Pre calculated data</h1>
+        <h2><code>GET /bots</code> - Pre calculated data, grouped by lib</h2>
+        <code class = "prettyprint" style="white-space: pre-wrap;">
+            {
+                "total_bots": 12345,
+                "updated": "ISO-8601 timestamp of when the data was retrieved",
+                "stats": {
+                    "total": {
+                        "lib1": 123, //123 bots made with lib1
+                        "lib2": 456 //456 bots made with lib2
+                    },
+                    "certified": {
+                        "lib1": 123, //123 certified bots made with lib1
+                        "lib2": 456 //456 certified bots made with lib2
+                    },
+                    "points": {
+                        "lib1": 1234, //1234 total upvotes for bots made with lib1
+                        "lib2": 5678, //5678 total upvotes for bots made with lib2
+                    }
+                }
+            }
+        </code>
+        <br><br><br>
+        <h2><code>GET /query</code> - Query the API for specific data, with filtering and custom field selection</h2>
+        <h3>Querystring params:</h3>
+        <div>
+            <p><code>limit</code> - default 2<sup>63</sup>-1</p>
+            <p><code>script</code> - Lua script to filter result, "bots" is a <a href="https://docs.oracle.com/javase/8/docs/api/?java/util/stream/Stream.html">Java Stream</a> of <a href="https://github.com/natanbc/discordbots-api/blob/master/src/main/java/com/github/natanbc/discordbotsapi/BotInfo.java">BotInfo</a> objects</p>
+            <p><code>filter</code> - <code>&filter=lib=JDA&filter=username=Gabriel</code> (ignored if <code>script</code> is present)</p>
+            <p><code>select</code> - <code>&select=points&select=discriminator&select=avatar</code></p>
+        </div>
+        <h3>Valid field names and types are:</h3>
+        <ul>
+            %BOT_INFO_FIELDS%
+        </ul>
+        <h3>The response looks like this:</h3>
+        <code class="prettyprint" style="white-space: pre-wrap;">
+            {
+                "results": [
+                    {
+                        "field_1": value_1,
+                        "field_1": "value_2",
+                        "field_3": "value_3"
+                    },
+                    {
+                        "field_1": value_1,
+                        "field_1": "value_2",
+                        "field_3": "value_3"
+                    },
+                    {
+                       "field_1": value_1,
+                      "field_1": "value_2",
+                       "field_3": "value_3"
+                    }
+                ],
+                "updated": "ISO-8601 timestamp of when the data was retrieved"
+            }
+        </code>
+        <h6>CSS <strike>stolen</strike> taken from <a href="http://bettermotherfuckingwebsite.com">bettermotherfuckingwebsite.com</a></h6>
+    </body>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <style type="text/css">
+        body {
+            margin: 40px auto;
+            max-width: 1200px;
+            line-height: 1.6;
+            font-size: 18px;
+            color: #444;
+            padding:0 10px
+        }
+
+        h1,h2,h3,h4,h5,h6 {
+            line-height: 1.2;
+        }</style>
+</html>
