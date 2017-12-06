@@ -1,7 +1,7 @@
 # Official documentation
 https://dbl-stats.definitely-not-a-sketchy.host/
 
-# Community Warappers
+# Community Wrappers
 
 | Language | Github |
 |:--------:|:------:|
