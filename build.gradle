@@ -23,6 +23,8 @@ dependencies {
     compile 'com.github.caskdata:netty-http:ef49be6'
     compile 'com.github.natanbc:lua-eval:1.1.1'
     compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'redis.clients:jedis:2.9.0'
+    testCompile 'com.github.kstyrc:embedded-redis:0.6'
 }
 
 shadowJar {
